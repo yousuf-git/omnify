@@ -1,0 +1,68 @@
+@import url("https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap");
+@import "tailwindcss";
+
+/* Tailwind v4: enable class-based dark mode so the app's `.dark` toggle drives dark: utilities */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Omnify design tokens as CSS variables — shared by Tailwind utilities (arbitrary values) and raw CSS */
+:root {
+  --omni-brand: #635bff;
+  --omni-brand-strong: #4b45d6;
+  --omni-brand-soft: #eef0ff;
+  --omni-ink: #0a2540;
+  --omni-bg: #ffffff;
+  --omni-bg-muted: #f6f9fc;
+  --omni-bg-subtle: #fafbfd;
+  --omni-border: #e3e8ef;
+  --omni-text: #0a2540;
+  --omni-text-secondary: #425466;
+  --omni-text-muted: #697386;
+  --omni-success: #00a86b;
+  --omni-warning: #f59e0b;
+  --omni-error: #df1b41;
+
+  --font-logo: "Syne", "Space Grotesk", system-ui, sans-serif;
+  --font-display: "Space Grotesk", "Manrope", system-ui, sans-serif;
+  --font-body: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.dark {
+  --omni-bg: #0a1a2f;
+  --omni-bg-muted: #0a1a2f;
+  --omni-bg-subtle: #0f2742;
+  --omni-border: #1e3a5f;
+  --omni-text: #e6edf6;
+  --omni-text-secondary: #9fb3c8;
+  --omni-text-muted: #7c92a8;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-body);
+  margin: 0;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-logo {
+  font-family: var(--font-logo);
+}
+
+/* Custom scrollbar used by the app shell */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--omni-border);
+  border-radius: 999px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}

@@ -1,0 +1,30 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - echo "Current Node version:"
+        - node --version
+        - echo "Installing Node 20..."
+        - nvm install 20
+        - nvm use 20
+        - echo "Updated Node version:"
+        - node --version
+        - echo "Updated NPM version:"
+        - npm --version
+        - npm ci --cache .npm --prefer-offline
+    build:
+      commands:
+        - nvm use 20
+        - npm run build
+  artifacts:
+    baseDirectory: dist
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+      - .npm/**/*
+      - .cache/**/*
+build:
+  commands: []

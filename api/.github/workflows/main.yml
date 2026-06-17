@@ -1,0 +1,39 @@
+name: Deploy to Elastic Beanstalk
+
+on:
+  push:
+    branches:
+      - main   # or whatever branch you deploy from
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install # --production      # this is for testing only
+
+      # - name: Run tests
+        # run: npm test
+
+      - name: Generate deployment package
+        run: zip -r deploy.zip * .[^.]* -x "node_modules/*" "*.git*"
+
+      - name: Deploy to Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: IMS-BACKEND                         # EB app name
+          environment_name: IMS-BACKEND-env                     # EB environment
+          version_label: v-${{ github.sha }}
+          region: ap-south-1                                    # ap-southeast-1
+          deployment_package: deploy.zip
