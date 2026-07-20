@@ -5,6 +5,8 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import { createServer } from "http";
 import { connectDB } from "./config/db.js";
+import { initIO } from "./io.js";
+import { recordRequest } from "./metrics.js";
 import dotenv from "dotenv";
 import DeliveryStatusRounter from "./../routes/deliveryStatus/index.js";
 import InstallationStatuses from "./../routes/installationStatus/index.js";
@@ -39,6 +41,7 @@ import UserRouter from "./../routes/user/user.js";
 import AdminTenantRouter from "./../routes/admin/tenants.js";
 import TenantSelfRouter from "./../routes/tenant/index.js";
 import SandboxRouter from "./../routes/sandbox/index.js";
+import HealthRouter from "./../routes/health/index.js";
 import cookieParser from "cookie-parser";
 // Import scheduler to start cron jobs
 import "../services/scheduler.js";
@@ -49,16 +52,19 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const server = createServer(app);
 
+const CORS_ORIGINS = [
+  "http://localhost:5173",
+  "https://www.ims.coretechsolutions.in",
+  "https://ims.coretechsolutions.in"
+];
+
+initIO(server, CORS_ORIGINS);
 connectDB();
 
 // Defining CORS options
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://www.ims.coretechsolutions.in",
-      "https://ims.coretechsolutions.in"
-    ],
+    origin: CORS_ORIGINS,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
   })
@@ -127,13 +133,13 @@ app.use((req, res, next) => {
   }
   
   console.log(logMessage);
-  
+
+  res.on("finish", () => recordRequest(res.statusCode));
   next();
 });
 
-app.get("/health", (req, res) => {
-  res.json({ health: "health is fine :)" });
-});
+// Health dashboard + metrics API (must be before the wildcard "/" routers)
+app.use(HealthRouter);
 
 // Sandbox: fully isolated demo data layer (own DB, own token). Unauthenticated
 // except for the sandbox session token enforced inside the router.
