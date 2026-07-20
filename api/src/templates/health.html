@@ -7,463 +7,381 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#07090f;
-  --surface:#0d1219;
-  --surface2:#111827;
-  --border:#1e2a3a;
-  --border2:#243044;
-  --text:#e2e8f0;
-  --muted:#4b5a72;
-  --muted2:#64748b;
+  --bg:#080a12;
+  --panel:rgba(255,255,255,.022);
+  --panel-border:rgba(255,255,255,.06);
+  --card:rgba(255,255,255,.015);
+  --card-border:rgba(255,255,255,.055);
+  --card-hover:rgba(255,255,255,.09);
+  --text:#e7ecf3;
+  --muted:#8792a6;
+  --faint:#586074;
   --brand:#635bff;
-  --green:#22c55e;
-  --red:#ef4444;
-  --yellow:#f59e0b;
-  --blue:#3b82f6;
+  --green:#34d399;
+  --red:#f87171;
+  --yellow:#fbbf24;
 }
-body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:13px;min-height:100vh;padding:20px 24px 40px}
+html,body{height:100%}
+body{
+  background:
+    radial-gradient(1200px 600px at 15% -10%, rgba(99,91,255,.10), transparent 60%),
+    radial-gradient(1000px 500px at 100% 0%, rgba(52,211,153,.05), transparent 55%),
+    var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif;
+  font-size:13px;line-height:1.4;
+  overflow-x:hidden;
+  min-height:100vh;
+}
 a{color:inherit;text-decoration:none}
+.topline{position:fixed;top:0;left:0;right:0;height:2px;z-index:10;
+  background:linear-gradient(90deg,transparent,var(--brand) 30%,var(--green) 75%,transparent)}
 
-/* Header */
-.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid var(--border)}
-.header-left{display:flex;align-items:center;gap:12px}
-.logo-dot{width:10px;height:10px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;flex-shrink:0}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}50%{box-shadow:0 0 0 6px rgba(34,197,94,0)}}
-.logo-dot.red{background:var(--red);animation:pulse-red 2s infinite}
-@keyframes pulse-red{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.5)}50%{box-shadow:0 0 0 6px rgba(239,68,68,0)}}
-.header-title{font-size:17px;font-weight:700;letter-spacing:-.3px}
-.header-sub{font-size:11px;color:var(--muted2);margin-top:1px}
-.header-right{display:flex;align-items:center;gap:20px;font-size:11px;color:var(--muted2)}
-.last-updated{display:flex;align-items:center;gap:6px}
-.refresh-dot{width:6px;height:6px;border-radius:50%;background:var(--brand)}
+.wrap{max-width:1440px;margin:0 auto;padding:26px 30px;
+  display:grid;grid-template-columns:320px 1fr;gap:26px;align-items:start;min-height:100vh}
 
-/* Grid layouts */
-.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px}
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
-@media(max-width:900px){.grid-4{grid-template-columns:1fr 1fr}.grid-2{grid-template-columns:1fr}}
-@media(max-width:560px){.grid-4{grid-template-columns:1fr}}
+/* ── Left hero panel ── */
+.hero{background:var(--panel);border:1px solid var(--panel-border);border-radius:18px;
+  padding:26px 24px;position:sticky;top:26px;display:flex;flex-direction:column;gap:18px}
+.brand{display:flex;align-items:center;gap:9px}
+.brand svg{display:block}
+.brand-name{font-size:14px;font-weight:700;letter-spacing:-.2px}
+.dots{display:flex;gap:7px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(52,211,153,.5);animation:pulse 2.4s infinite}
+.dot:nth-child(2){animation-delay:.3s}
+.dot:nth-child(3){animation-delay:.6s}
+.dot.red{background:var(--red);animation:pulseRed 2.4s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(52,211,153,.45)}50%{box-shadow:0 0 0 7px rgba(52,211,153,0)}}
+@keyframes pulseRed{0%,100%{box-shadow:0 0 0 0 rgba(248,113,113,.45)}50%{box-shadow:0 0 0 7px rgba(248,113,113,0)}}
+.headline{font-size:30px;font-weight:750;letter-spacing:-1px;line-height:1.05}
+.headline.err{color:var(--red)}
+.powered{display:inline-flex;align-items:center;gap:7px;align-self:flex-start;
+  background:var(--card);border:1px solid var(--card-border);border-radius:8px;
+  padding:6px 11px;font-size:12px;color:var(--muted)}
+.powered b{color:var(--text);font-weight:650}
+.powered .x{color:var(--faint);font-size:11px}
+.rt{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--muted)}
+.rt-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(52,211,153,.1);
+  border:1px solid rgba(52,211,153,.2);color:var(--green);border-radius:20px;
+  padding:3px 10px;font-size:11px;font-weight:600}
+.rt-badge .rt-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2.4s infinite}
+.desc{font-size:12.5px;color:var(--muted);line-height:1.65}
+.hero-links{display:flex;gap:16px;font-size:12px;color:var(--muted);
+  padding-top:16px;border-top:1px solid var(--panel-border)}
+.hero-links a{transition:color .15s}
+.hero-links a:hover{color:var(--text)}
+.copy{font-size:11px;color:var(--faint)}
 
-/* Cards */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
-.card-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);margin-bottom:8px}
-.card-value{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.5px}
-.card-sub{font-size:11px;color:var(--muted2);margin-top:4px}
+/* ── Right metrics ── */
+.metrics{display:flex;flex-direction:column;gap:16px}
+.sec{}
+.sec-label{font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--faint);margin-bottom:9px;display:flex;align-items:center;gap:7px}
+.sec-label svg{width:13px;height:13px;opacity:.8}
+.grid{display:grid;gap:11px}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g6{grid-template-columns:repeat(6,1fr)}
 
-/* Status badge */
-.badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:4px;letter-spacing:.03em}
-.badge-green{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.2)}
-.badge-red{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.2)}
-.badge-yellow{background:rgba(245,158,11,.1);color:var(--yellow);border:1px solid rgba(245,158,11,.2)}
-.badge-blue{background:rgba(99,91,255,.1);color:var(--brand);border:1px solid rgba(99,91,255,.2)}
+.card{background:var(--card);border:1px solid var(--card-border);border-radius:12px;
+  padding:13px 15px;transition:border-color .18s,background .18s;min-width:0}
+.card:hover{border-color:var(--card-hover)}
+.card-top{display:flex;align-items:center;gap:6px;margin-bottom:9px}
+.card-top svg{width:13px;height:13px;color:var(--faint);flex-shrink:0}
+.card-label{font-size:9.5px;font-weight:650;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-value{font-size:21px;font-weight:750;letter-spacing:-.6px;font-variant-numeric:tabular-nums;
+  line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-value.sm{font-size:17px}
+.card-value.green{color:var(--green)}
+.card-value.red{color:var(--red)}
+.card-value.yellow{color:var(--yellow)}
+.card-sub{font-size:10.5px;color:var(--faint);margin-top:5px;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.skel{height:20px;width:65%;border-radius:5px;
+  background:linear-gradient(90deg,rgba(255,255,255,.03) 25%,rgba(255,255,255,.07) 50%,rgba(255,255,255,.03) 75%);
+  background-size:200% 100%;animation:sh 1.3s infinite}
+@keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-/* Section header */
-.section-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:8px}
-.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
-
-/* Stack card */
-.stack-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)}
-.stack-row:last-child{border-bottom:none;padding-bottom:0}
-.stack-name{display:flex;align-items:center;gap:8px;color:var(--muted2);font-size:12px}
-.stack-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800}
-.stack-version{font-family:ui-monospace,monospace;font-size:12px;color:var(--text);font-weight:600}
-
-/* DB card */
-.db-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)}
-.db-row:last-child{border-bottom:none}
-.db-key{font-size:11px;color:var(--muted2)}
-.db-val{font-size:12px;font-weight:600;font-family:ui-monospace,monospace}
-
-/* Progress bar */
-.bar-wrap{margin-top:8px}
-.bar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
-.bar-label{font-size:11px;color:var(--muted2)}
-.bar-pct{font-size:11px;font-weight:700;font-family:ui-monospace,monospace}
-.bar-track{height:5px;background:var(--border2);border-radius:3px;overflow:hidden}
-.bar-fill{height:100%;border-radius:3px;transition:width .6s ease}
-.bar-fill.green{background:var(--green)}
-.bar-fill.yellow{background:var(--yellow)}
-.bar-fill.red{background:var(--red)}
-
-/* Perf rows */
-.perf-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)}
-.perf-row:last-child{border-bottom:none}
-.perf-key{font-size:11px;color:var(--muted2)}
-.perf-val{font-size:12px;font-weight:700;font-family:ui-monospace,monospace}
-
-/* Alerts */
-.alerts{margin-bottom:12px}
-.alert{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:6px;margin-bottom:8px;font-size:12px;line-height:1.5}
-.alert-icon{font-size:14px;flex-shrink:0;margin-top:1px}
-.alert.crit{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#fca5a5}
-.alert.warn{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);color:#fcd34d}
-.alert.info{background:rgba(99,91,255,.08);border:1px solid rgba(99,91,255,.2);color:#a5b4fc}
-
-/* Traffic stat mini */
-.traffic-val{font-size:28px;font-weight:800;font-family:ui-monospace,monospace;letter-spacing:-1px;line-height:1}
-.traffic-val.red{color:var(--red)}
-.traffic-val.green{color:var(--green)}
-
-/* Loader */
-.skeleton{background:linear-gradient(90deg,var(--surface) 25%,var(--surface2) 50%,var(--surface) 75%);background-size:200% 100%;animation:shimmer 1.2s infinite;border-radius:4px;height:16px;width:60%}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
-/* Footer */
-.footer{text-align:center;color:var(--muted);font-size:11px;margin-top:28px}
+@media(max-width:1080px){
+  .wrap{grid-template-columns:1fr;min-height:auto}
+  .hero{position:static}
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .g6{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:620px){.g3,.g4,.g6{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
+<div class="topline"></div>
+<div class="wrap">
 
-<!-- Header -->
-<div class="header">
-  <div class="header-left">
-    <div class="logo-dot" id="statusDot"></div>
-    <div>
-      <div class="header-title">Omnify API</div>
-      <div class="header-sub">Health &amp; Monitoring Dashboard</div>
+  <!-- Left hero -->
+  <aside class="hero">
+    <div class="brand">
+      <svg width="20" height="20" viewBox="0 0 26 26" fill="none">
+        <rect x="2" y="8" width="15" height="10" rx="5" stroke="#fff" stroke-width="2.4"/>
+        <circle cx="21" cy="17" r="3" fill="#635bff"/>
+      </svg>
+      <span class="brand-name">Omnify</span>
     </div>
-  </div>
-  <div class="header-right">
-    <div class="last-updated">
-      <div class="refresh-dot"></div>
+    <div class="dots"><span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span></div>
+    <h1 class="headline" id="headline">Connecting…</h1>
+    <div class="powered">Powered by&nbsp;<b>Express</b><span class="x">×</span><b>MongoDB</b><span class="x">×</span><b>Mongoose</b></div>
+    <div class="rt">
+      <span class="rt-badge"><span class="rt-dot"></span>Real-time</span>
       <span id="lastUpdated">—</span>
     </div>
-  </div>
+    <p class="desc">Live runtime status, refreshed every 3&nbsp;seconds — Mongo ping, process &amp; host uptime, event-loop lag, traffic, sockets, memory, CPU, disk, and the running stack.</p>
+    <div class="hero-links">
+      <a href="/health/metrics" target="_blank">JSON metrics</a>
+      <a href="#" onclick="refresh();return false">Refresh now</a>
+    </div>
+    <div class="copy">© 2026 Omnify</div>
+  </aside>
+
+  <!-- Right metrics -->
+  <main class="metrics">
+
+    <section class="sec">
+      <div class="sec-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/></svg>
+        Server
+      </div>
+      <div class="grid g3">
+        <div class="card">
+          <div class="card-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span class="card-label">Status</span></div>
+          <div class="card-value" id="v-status"><div class="skel"></div></div>
+          <div class="card-sub" id="s-status">—</div>
+        </div>
+        <div class="card">
+          <div class="card-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="card-label">Process Uptime</span></div>
+          <div class="card-value" id="v-puptime">—</div>
+          <div class="card-sub" id="s-puptime">—</div>
+        </div>
+        <div class="card">
+          <div class="card-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"/></svg><span class="card-label">Environment</span></div>
+          <div class="card-value sm" id="v-env">—</div>
+          <div class="card-sub" id="s-env">—</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 2 7l10 5 10-5-10-5ZM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        Stack
+      </div>
+      <div class="grid g3">
+        <div class="card">
+          <div class="card-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg><span class="card-label">Express</span></div>
+          <div class="card-value sm" id="v-express">—</div>
+          <div class="card-sub" id="s-express">—</div>
+        </div>
+        <div class="card">
+          <div class="card-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg><span class="card-label">Mongoose</span></div>
+          <div class="card-value sm" id="v-mongoose">—</div>
+          <div class="card-sub" id="s-mongoose">—</div>
+        </div>
+        <div class="card">
+          <div class="card-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/><path d="M12 14v3l2 1"/></svg><span class="card-label">node-cron</span></div>
+          <div class="card-value sm" id="v-cron">—</div>
+          <div class="card-sub" id="s-cron">Scheduler</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+        Data Plane
+      </div>
+      <div class="grid g4">
+        <div class="card">
+          <div class="card-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/></svg><span class="card-label">MongoDB</span></div>
+          <div class="card-value sm" id="v-db"><div class="skel"></div></div>
+          <div class="card-sub" id="s-db">—</div>
+        </div>
+        <div class="card">
+          <div class="card-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg><span class="card-label">Primary DB</span></div>
+          <div class="card-value sm" id="v-dbname">—</div>
+          <div class="card-sub" id="s-dbname">—</div>
+        </div>
+        <div class="card">
+          <div class="card-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M9 12h6M12 9v6"/></svg><span class="card-label">Sandbox DB</span></div>
+          <div class="card-value sm" id="v-sbname">—</div>
+          <div class="card-sub">Isolated demo</div>
+        </div>
+        <div class="card">
+          <div class="card-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 18h.01M10 18h.01"/><path d="M6 14V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v10"/></svg><span class="card-label">Host</span></div>
+          <div class="card-value sm" id="v-host">—</div>
+          <div class="card-sub" id="s-host">—</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        Traffic &amp; Sockets
+      </div>
+      <div class="grid g6">
+        <div class="card">
+          <div class="card-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span class="card-label">Req / Min</span></div>
+          <div class="card-value" id="v-rpm">—</div>
+          <div class="card-sub" id="s-rpm">—</div>
+        </div>
+        <div class="card">
+          <div class="card-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></svg><span class="card-label">5XX Errors</span></div>
+          <div class="card-value" id="v-5xx">—</div>
+          <div class="card-sub">Since boot</div>
+        </div>
+        <div class="card">
+          <div class="card-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 14a4 4 0 1 0-4-4"/><path d="M12 14v6M12 2v2M4.9 4.9l1.4 1.4M2 12h2"/></svg><span class="card-label">Loop Lag</span></div>
+          <div class="card-value" id="v-lag">—</div>
+          <div class="card-sub">Sampled 1s</div>
+        </div>
+        <div class="card">
+          <div class="card-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg><span class="card-label">WebSocket</span></div>
+          <div class="card-value sm" id="v-ws">—</div>
+          <div class="card-sub" id="s-ws">Realtime</div>
+        </div>
+        <div class="card">
+          <div class="card-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg><span class="card-label">Total Req</span></div>
+          <div class="card-value" id="v-total">—</div>
+          <div class="card-sub">Since boot</div>
+        </div>
+        <div class="card">
+          <div class="card-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="card-label">Host Uptime</span></div>
+          <div class="card-value sm" id="v-huptime">—</div>
+          <div class="card-sub" id="s-huptime">—</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg>
+        Resources
+      </div>
+      <div class="grid g3">
+        <div class="card">
+          <div class="card-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg><span class="card-label">CPU Load (1m)</span></div>
+          <div class="card-value" id="v-cpu">—</div>
+          <div class="card-sub" id="s-cpu">—</div>
+        </div>
+        <div class="card">
+          <div class="card-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="18" height="10" rx="2"/><path d="M7 8V6M12 8V6M17 8V6M7 22v-4M17 22v-4"/></svg><span class="card-label">Memory</span></div>
+          <div class="card-value sm" id="v-mem">—</div>
+          <div class="card-sub" id="s-mem">—</div>
+        </div>
+        <div class="card">
+          <div class="card-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 18h.01M10 18h.01"/><path d="m6 14 4-9h4l4 9"/></svg><span class="card-label">Disk ( / )</span></div>
+          <div class="card-value" id="v-disk">—</div>
+          <div class="card-sub" id="s-disk">—</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
 </div>
-
-<!-- Alerts (hidden until populated) -->
-<div class="alerts" id="alerts"></div>
-
-<!-- Overview -->
-<div class="section-title">Overview</div>
-<div class="grid-4" style="margin-bottom:20px">
-  <div class="card">
-    <div class="card-label">Status</div>
-    <div id="ov-status"><div class="skeleton"></div></div>
-    <div class="card-sub" id="ov-env">—</div>
-  </div>
-  <div class="card">
-    <div class="card-label">Process Uptime</div>
-    <div class="card-value" id="ov-puptime">—</div>
-    <div class="card-sub">Since last restart</div>
-  </div>
-  <div class="card">
-    <div class="card-label">Host Uptime</div>
-    <div class="card-value" id="ov-huptime">—</div>
-    <div class="card-sub" id="ov-hostname">—</div>
-  </div>
-  <div class="card">
-    <div class="card-label">Node.js</div>
-    <div class="card-value" style="font-size:18px" id="ov-node">—</div>
-    <div class="card-sub" id="ov-platform">—</div>
-  </div>
-</div>
-
-<!-- Stack + Database -->
-<div class="section-title">Stack &amp; Database</div>
-<div class="grid-2" style="margin-bottom:20px">
-  <div class="card">
-    <div class="card-label" style="margin-bottom:4px">Tech Stack</div>
-    <div class="stack-row">
-      <div class="stack-name">
-        <div class="stack-icon" style="background:#1a2535;color:#e2e8f0">Ex</div>
-        Express
-      </div>
-      <div class="stack-version" id="st-express">—</div>
-    </div>
-    <div class="stack-row">
-      <div class="stack-name">
-        <div class="stack-icon" style="background:#1a3320;color:#22c55e">N</div>
-        Node.js
-      </div>
-      <div class="stack-version" id="st-node">—</div>
-    </div>
-    <div class="stack-row">
-      <div class="stack-name">
-        <div class="stack-icon" style="background:#1a2020;color:#47a248">Mn</div>
-        Mongoose
-      </div>
-      <div class="stack-version" id="st-mongoose">—</div>
-    </div>
-    <div class="stack-row">
-      <div class="stack-name">
-        <div class="stack-icon" style="background:#111820;color:#3b82f6">Sk</div>
-        Socket.IO
-      </div>
-      <div class="stack-version" id="st-socketio">—</div>
-    </div>
-    <div class="stack-row">
-      <div class="stack-name">
-        <div class="stack-icon" style="background:#1a1a26;color:#635bff">Cr</div>
-        node-cron
-      </div>
-      <div class="stack-version" id="st-cron">—</div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-label" style="margin-bottom:2px">MongoDB</div>
-    <div style="margin-bottom:12px" id="db-badge"><div class="skeleton" style="width:100px"></div></div>
-    <div class="db-row">
-      <div class="db-key">Database</div>
-      <div class="db-val" id="db-name">—</div>
-    </div>
-    <div class="db-row">
-      <div class="db-key">Collections</div>
-      <div class="db-val" id="db-collections">—</div>
-    </div>
-    <div class="db-row">
-      <div class="db-key">Ping</div>
-      <div class="db-val" id="db-ping">—</div>
-    </div>
-    <div class="db-row">
-      <div class="db-key">Server IP</div>
-      <div class="db-val" id="db-ip">—</div>
-    </div>
-  </div>
-</div>
-
-<!-- Traffic -->
-<div class="section-title">Traffic &amp; Sockets</div>
-<div class="grid-4" style="margin-bottom:20px">
-  <div class="card">
-    <div class="card-label">Req / Min</div>
-    <div class="traffic-val" id="tr-rpm">—</div>
-    <div class="card-sub">Rolling 60s window</div>
-  </div>
-  <div class="card">
-    <div class="card-label">Total Requests</div>
-    <div class="traffic-val" id="tr-total">—</div>
-    <div class="card-sub">Since boot</div>
-  </div>
-  <div class="card">
-    <div class="card-label">5XX Errors</div>
-    <div class="traffic-val" id="tr-5xx">—</div>
-    <div class="card-sub">Server errors</div>
-  </div>
-  <div class="card">
-    <div class="card-label">WS Clients</div>
-    <div class="traffic-val" id="tr-ws">—</div>
-    <div class="card-sub">Socket.IO connections</div>
-  </div>
-</div>
-
-<!-- Performance + Resources -->
-<div class="section-title">Performance &amp; Resources</div>
-<div class="grid-2" style="margin-bottom:20px">
-  <div class="card">
-    <div class="card-label" style="margin-bottom:4px">Performance</div>
-    <div class="perf-row">
-      <div class="perf-key">Event-loop lag</div>
-      <div class="perf-val" id="pf-lag">—</div>
-    </div>
-    <div class="perf-row">
-      <div class="perf-key">Heap used</div>
-      <div class="perf-val" id="pf-heap-used">—</div>
-    </div>
-    <div class="perf-row">
-      <div class="perf-key">Heap total</div>
-      <div class="perf-val" id="pf-heap-total">—</div>
-    </div>
-    <div class="perf-row">
-      <div class="perf-key">RSS</div>
-      <div class="perf-val" id="pf-rss">—</div>
-    </div>
-    <div class="perf-row">
-      <div class="perf-key">External</div>
-      <div class="perf-val" id="pf-ext">—</div>
-    </div>
-    <div class="bar-wrap" style="margin-top:12px">
-      <div class="bar-header">
-        <div class="bar-label">Heap usage</div>
-        <div class="bar-pct" id="pf-heap-pct">—</div>
-      </div>
-      <div class="bar-track"><div class="bar-fill green" id="pf-heap-bar" style="width:0%"></div></div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-label" style="margin-bottom:4px">Resources</div>
-    <div class="perf-row">
-      <div class="perf-key">CPU cores</div>
-      <div class="perf-val" id="rs-cpus">—</div>
-    </div>
-    <div class="perf-row">
-      <div class="perf-key">Load avg (1m)</div>
-      <div class="perf-val" id="rs-load1">—</div>
-    </div>
-    <div class="perf-row">
-      <div class="perf-key">Load avg (5m)</div>
-      <div class="perf-val" id="rs-load5">—</div>
-    </div>
-    <div class="perf-row">
-      <div class="perf-key">Load avg (15m)</div>
-      <div class="perf-val" id="rs-load15">—</div>
-    </div>
-    <div class="bar-wrap" style="margin-top:12px">
-      <div class="bar-header">
-        <div class="bar-label">Memory (heap)</div>
-        <div class="bar-pct" id="rs-mem-pct">—</div>
-      </div>
-      <div class="bar-track"><div class="bar-fill green" id="rs-mem-bar" style="width:0%"></div></div>
-    </div>
-    <div class="bar-wrap" style="margin-top:10px" id="disk-section">
-      <div class="bar-header">
-        <div class="bar-label">Disk ( / )</div>
-        <div class="bar-pct" id="rs-disk-pct">—</div>
-      </div>
-      <div class="bar-track"><div class="bar-fill green" id="rs-disk-bar" style="width:0%"></div></div>
-      <div class="card-sub" id="rs-disk-sub" style="margin-top:4px">—</div>
-    </div>
-  </div>
-</div>
-
-<div class="footer">Omnify API &nbsp;·&nbsp; Auto-refreshes every 3s</div>
 
 <script>
 const MB = 1024 * 1024;
-
-function fmt(bytes) {
-  if (bytes == null) return '—';
-  if (bytes >= 1024 * MB) return (bytes / (1024 * MB)).toFixed(1) + ' GB';
-  if (bytes >= MB) return (bytes / MB).toFixed(1) + ' MB';
-  return (bytes / 1024).toFixed(0) + ' KB';
+function fmt(b){
+  if(b==null) return '—';
+  if(b>=1024*MB) return (b/(1024*MB)).toFixed(1)+' GB';
+  if(b>=MB) return (b/MB).toFixed(1)+' MB';
+  return (b/1024).toFixed(0)+' KB';
 }
-
-function barColor(pct) {
-  if (pct >= 90) return 'red';
-  if (pct >= 70) return 'yellow';
-  return 'green';
+function set(id,val){const e=document.getElementById(id);if(e)e.textContent=val;}
+function html(id,h){const e=document.getElementById(id);if(e)e.innerHTML=h;}
+function tone(id,cls){
+  const e=document.getElementById(id);if(!e)return;
+  e.className=e.className.replace(/\b(green|red|yellow)\b/g,'').trim();
+  if(cls) e.classList.add(cls);
 }
+function loadTone(v){ if(v>=1.5) return 'red'; if(v>=0.8) return 'yellow'; return 'green'; }
+function pctTone(p){ if(p>=90) return 'red'; if(p>=75) return 'yellow'; return 'green'; }
 
-function setBar(barId, pct) {
-  const el = document.getElementById(barId);
-  if (!el) return;
-  el.style.width = Math.min(pct, 100) + '%';
-  el.className = 'bar-fill ' + barColor(pct);
-}
-
-function setText(id, val) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = val;
-}
-
-function setHTML(id, html) {
-  const el = document.getElementById(id);
-  if (el) el.innerHTML = html;
-}
-
-function badge(text, cls) {
-  return `<span class="badge badge-${cls}">${text}</span>`;
-}
-
-function renderAlerts(d) {
-  const container = document.getElementById('alerts');
-  const items = [];
-
-  if (d.database.readyState !== 1)
-    items.push({ cls: 'crit', icon: '🔴', msg: 'MongoDB is <strong>disconnected</strong>. All data operations will fail.' });
-
-  if (d.performance.heapPct >= 90)
-    items.push({ cls: 'crit', icon: '🔴', msg: `Heap memory critically high — <strong>${d.performance.heapPct}%</strong> used.` });
-  else if (d.performance.heapPct >= 75)
-    items.push({ cls: 'warn', icon: '🟡', msg: `Heap memory elevated — <strong>${d.performance.heapPct}%</strong> used.` });
-
-  if (d.resources.disk) {
-    if (d.resources.disk.pct >= 95)
-      items.push({ cls: 'crit', icon: '🔴', msg: `Disk is <strong>critically full</strong> (${d.resources.disk.pct}%). Service may fail imminently.` });
-    else if (d.resources.disk.pct >= 80)
-      items.push({ cls: 'warn', icon: '🟡', msg: `Disk usage high — <strong>${d.resources.disk.pct}%</strong> used.` });
-  }
-
-  if (d.performance.eventLoopLag > 100)
-    items.push({ cls: 'warn', icon: '🟡', msg: `Event-loop lag is high — <strong>${d.performance.eventLoopLag}ms</strong>. Possible blocking operation.` });
-
-  if (d.traffic.errors5xx > 0)
-    items.push({ cls: 'warn', icon: '🟡', msg: `<strong>${d.traffic.errors5xx}</strong> 5XX error${d.traffic.errors5xx > 1 ? 's' : ''} since boot.` });
-
-  container.innerHTML = items.map(i =>
-    `<div class="alert ${i.cls}"><div class="alert-icon">${i.icon}</div><div>${i.msg}</div></div>`
-  ).join('');
-}
-
-async function refresh() {
-  try {
+async function refresh(){
+  try{
     const res = await fetch('/health/metrics');
-    if (!res.ok) throw new Error('fetch failed');
+    if(!res.ok) throw new Error();
     const d = await res.json();
+    const up = d.database.readyState === 1;
 
-    // Header dot
-    const dot = document.getElementById('statusDot');
-    dot.className = 'logo-dot' + (d.database.readyState === 1 ? '' : ' red');
+    // dots + headline
+    ['d1','d2','d3'].forEach(id=>{document.getElementById(id).className='dot'+(up?'':' red');});
+    const h = document.getElementById('headline');
+    h.textContent = up ? 'Server is running' : 'Database offline';
+    h.className = 'headline' + (up ? '' : ' err');
+    set('lastUpdated','Updated '+new Date().toLocaleTimeString());
 
-    setText('lastUpdated', 'Updated ' + new Date().toLocaleTimeString());
+    // SERVER
+    const start = new Date(Date.now() - d.server.processUptime*1000);
+    html('v-status', up ? 'Running' : 'Degraded'); tone('v-status', up?'green':'yellow');
+    document.getElementById('v-status').classList.add('card-value');
+    set('s-status','Started '+start.toLocaleString());
+    set('v-puptime', d.server.processUptimeFmt);
+    set('s-puptime','Host '+d.server.osUptimeFmt);
+    set('v-env', d.server.env); tone('v-env', d.server.env === 'production' ? 'green' : 'yellow');
+    document.getElementById('v-env').classList.add('card-value','sm');
+    set('s-env', d.server.ip+' · '+d.server.platform+'/'+d.server.arch);
 
-    // Alerts
-    renderAlerts(d);
+    // STACK
+    set('v-express','v'+d.stack.express); set('s-express','Node '+d.server.nodeVersion);
+    set('v-mongoose','v'+d.stack.mongoose); set('s-mongoose','ODM layer');
+    set('v-cron','v'+d.stack.nodeCron); set('s-cron','Scheduler active');
 
-    // Overview
-    setHTML('ov-status', badge(d.server.status === 'running' ? '● Running' : '● Error', d.server.status === 'running' ? 'green' : 'red'));
-    setText('ov-env', d.server.env.toUpperCase());
-    setText('ov-puptime', d.server.processUptimeFmt);
-    setText('ov-huptime', d.server.osUptimeFmt);
-    setText('ov-hostname', d.server.hostname);
-    setText('ov-node', d.server.nodeVersion);
-    setText('ov-platform', d.server.platform + ' / ' + d.server.arch);
+    // DATA PLANE
+    html('v-db', up ? 'Connected' : d.database.state); tone('v-db', up?'green':'red');
+    document.getElementById('v-db').classList.add('card-value');
+    set('s-db', d.database.ping!=null ? 'Ping '+d.database.ping+' ms' : 'Unreachable');
+    set('v-dbname', d.database.name || '—');
+    set('s-dbname', (d.database.collections||0)+' collections');
+    set('v-sbname', d.database.sandboxName || '—');
+    set('v-host', d.server.ip);
+    set('s-host', d.server.hostname);
 
-    // Stack
-    setText('st-express', 'v' + d.stack.express);
-    setText('st-node', d.server.nodeVersion);
-    setText('st-mongoose', 'v' + d.stack.mongoose);
-    setText('st-socketio', 'v' + d.stack.socketio);
-    setText('st-cron', 'v' + d.stack.nodeCron);
-
-    // Database
-    const dbCls = d.database.readyState === 1 ? 'green' : (d.database.readyState === 2 ? 'yellow' : 'red');
-    setHTML('db-badge', badge(d.database.state.charAt(0).toUpperCase() + d.database.state.slice(1), dbCls));
-    setText('db-name', d.database.name || '—');
-    setText('db-collections', d.database.collections != null ? d.database.collections : '—');
-    setText('db-ping', d.database.ping != null ? d.database.ping + ' ms' : 'n/a');
-    setText('db-ip', d.server.ip);
-
-    // Traffic
-    setText('tr-rpm', d.traffic.perMinute.toFixed(1));
-    setText('tr-total', d.traffic.total.toLocaleString());
-    const errEl = document.getElementById('tr-5xx');
-    if (errEl) { errEl.textContent = d.traffic.errors5xx; errEl.className = 'traffic-val' + (d.traffic.errors5xx > 0 ? ' red' : ' green'); }
-    setText('tr-ws', d.traffic.socketClients);
-
-    // Performance
-    setText('pf-lag', d.performance.eventLoopLag + ' ms');
-    setText('pf-heap-used', fmt(d.performance.heapUsed));
-    setText('pf-heap-total', fmt(d.performance.heapTotal));
-    setText('pf-rss', fmt(d.performance.rss));
-    setText('pf-ext', fmt(d.performance.external));
-    setText('pf-heap-pct', d.performance.heapPct + '%');
-    setBar('pf-heap-bar', d.performance.heapPct);
-
-    // Resources
-    setText('rs-cpus', d.resources.cpus);
-    setText('rs-load1', d.resources.loadAvg[0].toFixed(2));
-    setText('rs-load5', d.resources.loadAvg[1].toFixed(2));
-    setText('rs-load15', d.resources.loadAvg[2].toFixed(2));
-    setText('rs-mem-pct', d.performance.heapPct + '%');
-    setBar('rs-mem-bar', d.performance.heapPct);
-
-    if (d.resources.disk) {
-      setText('rs-disk-pct', d.resources.disk.pct + '%');
-      setBar('rs-disk-bar', d.resources.disk.pct);
-      setText('rs-disk-sub', fmt(d.resources.disk.free) + ' free of ' + fmt(d.resources.disk.total));
-      document.getElementById('disk-section').style.display = '';
+    // TRAFFIC
+    set('v-rpm', d.traffic.perMinute.toFixed(1));
+    set('s-rpm','Rolling 60s');
+    set('v-5xx', d.traffic.errors5xx); tone('v-5xx', d.traffic.errors5xx>0?'red':'green');
+    document.getElementById('v-5xx').classList.add('card-value');
+    set('v-lag', d.performance.eventLoopLag+' ms'); tone('v-lag', d.performance.eventLoopLag>100?'yellow':'');
+    document.getElementById('v-lag').classList.add('card-value');
+    if(d.traffic.websocketEnabled){
+      set('v-ws', d.traffic.socketClients); set('s-ws','Online clients'); tone('v-ws','green');
     } else {
-      document.getElementById('disk-section').style.display = 'none';
+      set('v-ws','Not enabled'); set('s-ws','WebSocket off'); tone('v-ws','');
     }
+    document.getElementById('v-ws').classList.add('card-value','sm');
+    set('v-total', d.traffic.total.toLocaleString());
+    set('v-huptime', d.server.osUptimeFmt);
+    set('s-huptime','Since boot');
 
-  } catch (e) {
-    setText('lastUpdated', 'Fetch error — retrying…');
+    // RESOURCES
+    const l1 = d.resources.loadAvg[0];
+    const perCore = l1 / (d.resources.cpus||1);
+    set('v-cpu', l1.toFixed(2)); tone('v-cpu', loadTone(perCore));
+    document.getElementById('v-cpu').classList.add('card-value');
+    set('s-cpu', d.resources.cpus+' cores · 5m '+d.resources.loadAvg[1].toFixed(2)+' · 15m '+d.resources.loadAvg[2].toFixed(2));
+    set('v-mem', fmt(d.performance.heapUsed)+' / '+fmt(d.performance.heapTotal));
+    tone('v-mem', pctTone(d.performance.heapPct));
+    document.getElementById('v-mem').classList.add('card-value','sm');
+    set('s-mem', 'RSS '+fmt(d.performance.rss)+' · ext '+fmt(d.performance.external));
+    if(d.resources.disk){
+      set('v-disk', d.resources.disk.pct+'%'); tone('v-disk', pctTone(d.resources.disk.pct));
+      document.getElementById('v-disk').classList.add('card-value');
+      set('s-disk', fmt(d.resources.disk.free)+' free of '+fmt(d.resources.disk.total));
+    } else {
+      set('v-disk','n/a'); set('s-disk','df unavailable');
+    }
+  }catch(e){
+    set('lastUpdated','Fetch error — retrying…');
   }
 }
-
 refresh();
 setInterval(refresh, 3000);
 </script>

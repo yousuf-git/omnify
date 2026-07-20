@@ -5,7 +5,6 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import { createServer } from "http";
 import { connectDB } from "./config/db.js";
-import { initIO } from "./io.js";
 import { recordRequest } from "./metrics.js";
 import dotenv from "dotenv";
 import DeliveryStatusRounter from "./../routes/deliveryStatus/index.js";
@@ -58,7 +57,6 @@ const CORS_ORIGINS = [
   "https://ims.coretechsolutions.in"
 ];
 
-initIO(server, CORS_ORIGINS);
 connectDB();
 
 // Defining CORS options
@@ -134,7 +132,10 @@ app.use((req, res, next) => {
   
   console.log(logMessage);
 
-  res.on("finish", () => recordRequest(res.statusCode));
+  // Exclude the health dashboard/metrics from traffic counters.
+  res.on("finish", () => {
+    if (route !== "/" && !route.startsWith("/health")) recordRequest(res.statusCode);
+  });
   next();
 });
 

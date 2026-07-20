@@ -6,7 +6,6 @@ import { createRequire } from "module";
 import { fileURLToPath } from "url";
 import path from "path";
 import { state, getReqPerMinute, eventLoopLag } from "../../src/metrics.js";
-import { getIO } from "../../src/io.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
@@ -88,7 +87,6 @@ router.get("/health/metrics", async (req, res) => {
   const mem = process.memoryUsage();
   const db = await getDbMetrics();
   const disk = getDisk();
-  const io = getIO();
 
   res.json({
     server: {
@@ -107,15 +105,17 @@ router.get("/health/metrics", async (req, res) => {
     stack: {
       express: pkgVersion("express"),
       mongoose: pkgVersion("mongoose"),
-      socketio: pkgVersion("socket.io"),
       nodeCron: pkgVersion("node-cron"),
     },
-    database: db,
+    database: {
+      ...db,
+      sandboxName: process.env.SANDBOX_DB_NAME || "sandbox_ims",
+    },
     traffic: {
       total: state.reqTotal,
       perMinute: getReqPerMinute(),
       errors5xx: state.req5xx,
-      socketClients: io?.engine?.clientsCount ?? 0,
+      websocketEnabled: false,
     },
     performance: {
       eventLoopLag,
