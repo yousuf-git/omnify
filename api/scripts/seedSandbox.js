@@ -16,7 +16,7 @@ async function run() {
     process.env.MONGO_URI ||
     "mongodb://127.0.0.1:27017/ims";
   await mongoose.connect(uri);
-  console.log(`Connected. Seeding sandbox DB "${process.env.SANDBOX_DB_NAME || "ims_sandbox"}"`);
+  console.log(`Connected. Seeding sandbox DB "${process.env.SANDBOX_DB_NAME || "sandbox_ims"}"`);
 
   // Allocate a stable ObjectId per seed key across all resources.
   const keyMap = new Map();

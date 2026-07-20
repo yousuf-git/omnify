@@ -5,7 +5,7 @@ import { RESOURCE_TO_MODEL } from "./maps.js";
 let conn = null;
 export function sbConn() {
   if (!conn) {
-    conn = mongoose.connection.useDb(process.env.SANDBOX_DB_NAME || "ims_sandbox", {
+    conn = mongoose.connection.useDb(process.env.SANDBOX_DB_NAME || "sandbox_ims", {
       useCache: true,
     });
   }
