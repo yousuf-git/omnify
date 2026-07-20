@@ -1,8 +1,7 @@
 <div align="center">
 
-  <img src="web/public/omnify-logo.svg" alt="Omnify logo" width="120" />
+  <img src="assets/omnify-logo-white.svg" alt="Omnify logo" width="420" />
 
-  <h1>Omnify</h1>
 
   <p><strong>Multi-tenant inventory & support-ticketing SaaS — stock movements, warehouses, and customer tickets for operations teams.</strong></p>
 
