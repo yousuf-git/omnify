@@ -51,11 +51,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const server = createServer(app);
 
-const CORS_ORIGINS = [
-  "http://localhost:5173",
-  "https://www.ims.coretechsolutions.in",
-  "https://ims.coretechsolutions.in"
-];
+const CORS_ORIGINS = process.env.CORS_ORIGINS
+  ? process.env.CORS_ORIGINS.split(",").map((origin) => origin.trim())
+  : process.env.NODE_ENV === "development"
+  ? ["http://localhost:5173"]
+  : [];
 
 connectDB();
 
